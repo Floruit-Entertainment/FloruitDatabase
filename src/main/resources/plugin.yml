@@ -1,0 +1,4 @@
+name: FloruitDatabase
+version: '1.0-SNAPSHOT'
+main: com.hanielcota.floruitdatabase.FloruitDatabaseAPI
+api-version: '1.21'
