@@ -73,4 +73,11 @@ public class MainApplication {
         }
     }
 }
+```
 
+## ⚡ Foco Extremo em Velocidade e Async
+
+- **Operações Não-Bloqueantes**: Todas as interações com o banco de dados são **assíncronas**, utilizando `CompletableFuture` para respostas instantâneas e **máxima responsividade**.  
+- **Threads Virtuais do Project Loom**: Reduz a sobrecarga de threads, permitindo **milhares de operações simultâneas** com uso mínimo de recursos.  
+- **HikariCP Hiperotimizado**: Configurações avançadas garantem **tempos de resposta ultrarrápidos**, mesmo em cenários de alta carga.  
+- **Escalabilidade Extrema**: Projetada para suportar **picos de tráfego** e grandes volumes de dados, mantendo **performance estável** e **latência mínima**.
