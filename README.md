@@ -1,35 +1,35 @@
 # 💾 FloruitDB
 
-Uma biblioteca de banco de dados Java moderna, de **alta performance** e fácil de usar, projetada com as melhores práticas de design e os recursos mais recentes do **Java 21**. Otimizada para operações assíncronas e escalabilidade, é ideal para aplicações que exigem baixa latência e alta concorrência.
+A modern, **high-performance**, and user-friendly Java database library, designed with best practices and the latest features of **Java 21**. Optimized for asynchronous operations and scalability, it is ideal for applications requiring low latency and high concurrency.
 
-`FloruitDB` simplifica o uso do JDBC e o gerenciamento de conexões, oferecendo uma API fluente e segura para interagir com bancos de dados **MySQL**, priorizando **máxima performance** e facilidade de manutenção.
-
----
-
-## ✨ Principais Características
-
-- ☕ **Alta Performance com Java 21 & Threads Virtuais**  
-  Aproveita o **Project Loom** para suportar milhares de queries concorrentes com uso eficiente de recursos, garantindo escalabilidade massiva em operações de I/O assíncronas.
-
-- 🚀 **Pool de Conexões Ultrarrápido**  
-  Integrado com **HikariCP**, o pool de conexões mais performático do mercado, otimizado para mínima latência e alta taxa de transferência.
-
-- 🏛️ **Arquitetura Moderna com Design Patterns**  
-  - **Builder**: Configuração fluida e segura com `DatabaseConfigBuilder`.  
-  - **Command**: Fila de tarefas assíncrona para processar grandes volumes de atualizações com controle e eficiência.
-
-- ⚡ **Totalmente Assíncrona**  
-  Todas as operações utilizam `CompletableFuture`, permitindo um fluxo de código **não-bloqueante** e altamente reativo, ideal para aplicações de alta performance.
-
-- 🔒 **Segurança e Robustez**  
-  Usa **Java Records** para imutabilidade, validações rigorosas de nulidade e gerenciamento confiável de transações.
-
-- 🧩 **Independente de Frameworks**  
-  Funciona em qualquer aplicação Java, sem dependências de frameworks como Spring ou outros.
+`FloruitDB` simplifies JDBC usage and connection management, offering a fluent and secure API for interacting with **MySQL** databases, prioritizing **maximum performance** and ease of maintenance.
 
 ---
 
-## 🚀 Instalação
+## ✨ Key Features
+
+- ☕ **High Performance with Java 21 & Virtual Threads**  
+  Leverages **Project Loom** to support thousands of concurrent queries with efficient resource usage, ensuring massive scalability in asynchronous I/O operations.
+
+- 🚀 **Ultra-Fast Connection Pool**  
+  Integrated with **HikariCP**, the most performant connection pool available, optimized for minimal latency and high throughput.
+
+- 🏛️ **Modern Architecture with Design Patterns**  
+  - **Builder**: Fluent and secure configuration with `DatabaseConfigBuilder`.  
+  - **Command**: Asynchronous task queue for processing large volumes of updates with control and efficiency.
+
+- ⚡ **Fully Asynchronous**  
+  All operations use `CompletableFuture`, enabling **non-blocking** and highly reactive code flow, ideal for high-performance applications.
+
+- 🔒 **Security and Robustness**  
+  Utilizes **Java Records** for immutability, strict nullability checks, and reliable transaction management.
+
+- 🧩 **Framework-Independent**  
+  Works with any Java application, without dependencies on frameworks like Spring or others.
+
+---
+
+## 🚀 Install
 
 ### Maven
 
@@ -75,9 +75,9 @@ public class MainApplication {
 }
 ```
 
-## ⚡ Foco Extremo em Velocidade e Async
+## ⚡ Extreme Focus on Speed and Async
 
-- **Operações Não-Bloqueantes**: Todas as interações com o banco de dados são **assíncronas**, utilizando `CompletableFuture` para respostas instantâneas e **máxima responsividade**.  
-- **Threads Virtuais do Project Loom**: Reduz a sobrecarga de threads, permitindo **milhares de operações simultâneas** com uso mínimo de recursos.  
-- **HikariCP Hiperotimizado**: Configurações avançadas garantem **tempos de resposta ultrarrápidos**, mesmo em cenários de alta carga.  
-- **Escalabilidade Extrema**: Projetada para suportar **picos de tráfego** e grandes volumes de dados, mantendo **performance estável** e **latência mínima**.
+- **Non-Blocking Operations**: All database interactions are **asynchronous**, using `CompletableFuture` for instant responses and **maximum responsiveness**.  
+- **Project Loom Virtual Threads**: Reduces thread overhead, enabling **thousands of simultaneous operations** with minimal resource usage.  
+- **Hyper-Optimized HikariCP**: Advanced configurations ensure **ultra-fast response times**, even in high-load scenarios.  
+- **Extreme Scalability**: Designed to handle **traffic spikes** and large data volumes, maintaining **stable performance** and **minimal latency**.
