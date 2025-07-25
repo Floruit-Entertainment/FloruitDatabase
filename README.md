@@ -77,9 +77,9 @@ public class MainApplication {
 
 ## ⚡ Extreme Focus on Speed and Async
 
-© 2025 Floruit Entertaiment LTDA. Floruit Database (FloruitDB) is a registered trademark of Floruit Entertainment. All rights reserved.
-
 - **Non-Blocking Operations**: All database interactions are **asynchronous**, using `CompletableFuture` for instant responses and **maximum responsiveness**.  
 - **Project Loom Virtual Threads**: Reduces thread overhead, enabling **thousands of simultaneous operations** with minimal resource usage.  
 - **Hyper-Optimized HikariCP**: Advanced configurations ensure **ultra-fast response times**, even in high-load scenarios.  
 - **Extreme Scalability**: Designed to handle **traffic spikes** and large data volumes, maintaining **stable performance** and **minimal latency**.
+
+© 2025 Floruit Entertaiment LTDA. Floruit Database (FloruitDB) is a registered trademark of Floruit Entertainment. All rights reserved.
