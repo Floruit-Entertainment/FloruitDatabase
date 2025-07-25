@@ -4,8 +4,6 @@ A modern, **high-performance**, and user-friendly Java database library, designe
 
 `FloruitDB` simplifies JDBC usage and connection management, offering a fluent and secure API for interacting with **MySQL** databases, prioritizing **maximum performance** and ease of maintenance.
 
-- Created by Haniel Fialho and Floruit Entertainment, FloruitDatabase (FloruitDB) is a registered trademark of Floruit Entertainment. All rights reserved.
-
 ---
 
 ## ✨ Key Features
@@ -78,6 +76,8 @@ public class MainApplication {
 ```
 
 ## ⚡ Extreme Focus on Speed and Async
+
+© 2025 Floruit Entertaiment LTDA. Floruit Database (FloruitDB) is a registered trademark of Floruit Entertainment. All rights reserved.
 
 - **Non-Blocking Operations**: All database interactions are **asynchronous**, using `CompletableFuture` for instant responses and **maximum responsiveness**.  
 - **Project Loom Virtual Threads**: Reduces thread overhead, enabling **thousands of simultaneous operations** with minimal resource usage.  
