@@ -1,4 +1,29 @@
 name: FloruitDatabase
-version: '1.0-SNAPSHOT'
-main: com.hanielcota.floruitdatabase.FloruitDatabaseAPI
+version: '1.0.0'
+main: com.hanielcota.floruitdatabase.FloruitDatabase
 api-version: '1.21'
+description: 'Biblioteca de alta performance para banco de dados MySQL com Java 21'
+author: 'Floruit Entertainment'
+website: 'https://github.com/FloruitEntertainment'
+prefix: 'FloruitDB'
+
+# Dependências
+depend: []
+softdepend: []
+
+# Comandos do plugin (se necessário)
+commands:
+  floruitdb:
+    description: 'Comandos do FloruitDatabase'
+    usage: '/<command> [args]'
+    permission: 'floruitdb.admin'
+    aliases: [fdb]
+
+# Permissões
+permissions:
+  floruitdb.admin:
+    description: 'Permissão de administrador do FloruitDatabase'
+    default: op
+  floruitdb.use:
+    description: 'Permissão para usar o FloruitDatabase'
+    default: true
