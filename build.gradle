@@ -19,13 +19,25 @@ repositories {
 }
 
 dependencies {
+    // Minecraft Paper API (opcional - para plugins)
     compileOnly("io.papermc.paper:paper-api:1.21.6-R0.1-SNAPSHOT")
 
+    // Dependências principais
     implementation 'com.zaxxer:HikariCP:6.3.0'
-
-
+    implementation 'mysql:mysql-connector-java:8.0.33'
+    
+    // Logging
+    implementation 'org.slf4j:slf4j-api:2.0.9'
+    implementation 'ch.qos.logback:logback-classic:1.4.14'
+    
+    // Lombok para redução de boilerplate
     compileOnly("org.projectlombok:lombok:1.18.38")
     annotationProcessor("org.projectlombok:lombok:1.18.38")
+    
+    // Testes
+    testImplementation 'org.junit.jupiter:junit-jupiter:5.10.1'
+    testImplementation 'org.mockito:mockito-core:5.8.0'
+    testImplementation 'com.h2database:h2:2.2.224' // Banco em memória para testes
 }
 
 tasks {
@@ -62,4 +74,25 @@ processResources {
     filesMatching('plugin.yml') {
         expand props
     }
+}
+
+// Configurações de teste
+test {
+    useJUnitPlatform()
+    testLogging {
+        events "passed", "skipped", "failed"
+        exceptionFormat "full"
+    }
+}
+
+// Configurações de compilação
+tasks.withType(JavaCompile).configureEach {
+    options.compilerArgs += ['-parameters']
+}
+
+// Javadoc
+javadoc {
+    options.encoding = 'UTF-8'
+    options.charSet = 'UTF-8'
+    options.addBooleanOption('html5', true)
 }
