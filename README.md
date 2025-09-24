@@ -1,17 +1,17 @@
 # 💾 FloruitDatabase
 
-Uma biblioteca Java moderna e de alta performance para interação com bancos de dados MySQL, desenvolvida especificamente para aproveitar as funcionalidades mais recentes do **Java 21**.
+A modern, high-performance Java library for interacting with MySQL databases, specifically designed to leverage the latest features of **Java 21**.
 
-## ✨ Características Principais
+## ✨ Key Features
 
-- ☕ **Java 21 & Virtual Threads** - Aproveita o Project Loom para máxima concorrência
-- 🚀 **Pool de Conexões HikariCP** - Performance otimizada com configurações avançadas
-- 🏛️ **Design Patterns Modernos** - Builder, Command, Facade e Singleton
-- ⚡ **Operações Assíncronas** - Todas as operações usam CompletableFuture
-- 🔒 **Segurança e Robustez** - Java Records, validações e tratamento de erros
-- 🧩 **Framework-Independent** - Funciona com qualquer aplicação Java
+  - ☕ **Java 21 & Virtual Threads** - Leverages Project Loom for maximum concurrency
+  - 🚀 **HikariCP Connection Pool** - Optimized performance with advanced configurations
+  - 🏛️ **Modern Design Patterns** - Builder, Command, Facade, and Singleton
+  - ⚡ **Asynchronous Operations** - All operations use `CompletableFuture`
+  - 🔒 **Security and Robustness** - Java Records, validations, and error handling
+  - 🧩 **Framework-Independent** - Works with any Java application
 
-## 🚀 Instalação
+## 🚀 Installation
 
 ### Gradle
 
@@ -33,188 +33,188 @@ dependencies {
 </dependency>
 ```
 
-## 📖 Uso Básico
+## 📖 Basic Usage
 
-### Configuração
+### Configuration
 
 ```java
 import com.hanielcota.floruitdatabase.FloruitDatabase;
 import com.hanielcota.floruitdatabase.config.DatabaseConfig;
 
-// Configuração usando Builder pattern
-DatabaseConfig config = DatabaseConfig.builder("localhost", "meu_banco", "usuario")
-    .password("senha_segura")
+// Configuration using the Builder pattern
+DatabaseConfig config = DatabaseConfig.builder("localhost", "my_database", "user")
+    .password("secure_password")
     .port(3306)
     .maxPoolSize(20)
     .minIdle(5)
     .build();
 ```
 
-### Operações Básicas
+### Basic Operations
 
 ```java
 try (FloruitDatabase db = new FloruitDatabase(config)) {
     
-    // Inserção assíncrona
+    // Asynchronous insertion
     CompletableFuture<Integer> result = db.executeUpdate(
-        "INSERT INTO usuarios (nome, email) VALUES (?, ?)",
-        "João Silva", "joao@example.com"
+        "INSERT INTO users (name, email) VALUES (?, ?)",
+        "John Doe", "john@example.com"
     );
     
-    int linhasAfetadas = result.join();
-    System.out.println("Usuário inserido: " + linhasAfetadas);
+    int affectedRows = result.join();
+    System.out.println("User inserted: " + affectedRows);
     
-    // Consulta com mapeamento
-    CompletableFuture<Usuario> usuario = db.executeQuery(
-        "SELECT * FROM usuarios WHERE email = ?",
-        rs -> new Usuario(rs.getInt("id"), rs.getString("nome"), rs.getString("email")),
-        "joao@example.com"
+    // Query with mapping
+    CompletableFuture<User> userFuture = db.executeQuery(
+        "SELECT * FROM users WHERE email = ?",
+        rs -> new User(rs.getInt("id"), rs.getString("name"), rs.getString("email")),
+        "john@example.com"
     );
     
-    Usuario user = usuario.join();
-    System.out.println("Usuário encontrado: " + user);
+    User user = userFuture.join();
+    System.out.println("User found: " + user);
 }
 ```
 
-### Operações em Lote
+### Batch Operations
 
 ```java
-// Preparar dados para inserção em lote
-List<Object[]> dados = List.of(
+// Prepare data for batch insertion
+List<Object[]> data = List.of(
     new Object[]{"Maria Silva", "maria@example.com"},
     new Object[]{"Pedro Santos", "pedro@example.com"},
     new Object[]{"Ana Costa", "ana@example.com"}
 );
 
-// Executar inserção em lote
-CompletableFuture<int[]> resultado = db.executeBatch(
-    "INSERT INTO usuarios (nome, email) VALUES (?, ?)",
-    dados
+// Execute batch insert
+CompletableFuture<int[]> result = db.executeBatch(
+    "INSERT INTO users (name, email) VALUES (?, ?)",
+    data
 );
 
-int[] resultados = resultado.join();
-int totalInserido = Arrays.stream(resultados).sum();
-System.out.println("Total inserido: " + totalInserido);
+int[] results = result.join();
+int totalInserted = Arrays.stream(results).sum();
+System.out.println("Total inserted: " + totalInserted);
 ```
 
-### Transações
+### Transactions
 
 ```java
-// Transação atômica
-CompletableFuture<Void> transacao = db.executeTransaction(
-    // Inserir usuário
-    UpdateCommand.of("INSERT INTO usuarios (nome, email) VALUES (?, ?)", 
-                    "João", "joao@example.com"),
+// Atomic transaction
+CompletableFuture<Void> transaction = db.executeTransaction(
+    // Insert user
+    UpdateCommand.of("INSERT INTO users (name, email) VALUES (?, ?)", 
+                     "John", "john@example.com"),
     
-    // Inserir pedido
-    UpdateCommand.of("INSERT INTO pedidos (usuario_id, produto) VALUES (?, ?)", 
-                    1, "Produto A")
+    // Insert order
+    UpdateCommand.of("INSERT INTO orders (user_id, product) VALUES (?, ?)", 
+                     1, "Product A")
 );
 
-transacao.join();
-System.out.println("Transação executada com sucesso");
+transaction.join();
+System.out.println("Transaction executed successfully");
 ```
 
-### Fila de Comandos
+### Command Queue
 
 ```java
-// Enfileirar comandos para execução sequencial
-CompletableFuture<Integer> resultado1 = db.enqueueCommand(
-    UpdateCommand.of("INSERT INTO logs (mensagem) VALUES (?)", "Log 1")
+// Enqueue commands for sequential execution
+CompletableFuture<Integer> result1 = db.enqueueCommand(
+    UpdateCommand.of("INSERT INTO logs (message) VALUES (?)", "Log 1")
 );
 
-CompletableFuture<Integer> resultado2 = db.enqueueCommand(
-    UpdateCommand.of("INSERT INTO logs (mensagem) VALUES (?)", "Log 2")
+CompletableFuture<Integer> result2 = db.enqueueCommand(
+    UpdateCommand.of("INSERT INTO logs (message) VALUES (?)", "Log 2")
 );
 
-// Os comandos serão executados sequencialmente
-resultado1.join();
-resultado2.join();
+// The commands will be executed sequentially
+result1.join();
+result2.join();
 ```
 
-## 🏗️ Arquitetura
+## 🏗️ Architecture
 
-### Design Patterns Utilizados
+### Design Patterns Used
 
-1. **Builder Pattern** - `DatabaseConfigBuilder` para configuração fluente
-2. **Command Pattern** - `DatabaseCommand` e suas implementações
-3. **Facade Pattern** - `FloruitDatabase` como interface unificada
-4. **Singleton Pattern** - Gerenciamento de recursos compartilhados
+1.  **Builder Pattern** - `DatabaseConfigBuilder` for fluent configuration
+2.  **Command Pattern** - `DatabaseCommand` and its implementations
+3.  **Facade Pattern** - `FloruitDatabase` as a unified interface
+4.  **Singleton Pattern** - Management of shared resources
 
-### Componentes Principais
+### Core Components
 
-- **`FloruitDatabase`** - API principal (Facade)
-- **`ConnectionManager`** - Gerenciamento do pool HikariCP
-- **`AsyncExecutor`** - Execução com Virtual Threads
-- **`CommandQueue`** - Fila de comandos sequenciais
-- **`DatabaseCommand`** - Comandos encapsulados
+  - **`FloruitDatabase`** - Main API (Facade)
+  - **`ConnectionManager`** - HikariCP pool management
+  - **`AsyncExecutor`** - Execution with Virtual Threads
+  - **`CommandQueue`** - Sequential command queue
+  - **`DatabaseCommand`** - Encapsulated commands
 
 ## ⚡ Performance
 
 ### Virtual Threads (Java 21)
 
 ```java
-// Suporte nativo a milhares de operações concorrentes
+// Native support for thousands of concurrent operations
 CompletableFuture.allOf(
     db.executeUpdate("INSERT INTO logs (msg) VALUES (?)", "Msg 1"),
     db.executeUpdate("INSERT INTO logs (msg) VALUES (?)", "Msg 2"),
     db.executeUpdate("INSERT INTO logs (msg) VALUES (?)", "Msg 3")
-    // ... milhares de operações
+    // ... thousands of operations
 ).join();
 ```
 
-### Pool de Conexões Otimizado
+### Optimized Connection Pool
 
 ```java
 DatabaseConfig config = DatabaseConfig.builder("localhost", "db", "user")
     .password("pass")
-    .maxPoolSize(20)           // Pool otimizado
-    .minIdle(5)               // Conexões mínimas
+    .maxPoolSize(20)              // Optimized pool
+    .minIdle(5)                   // Minimum idle connections
     .connectionTimeout(Duration.ofSeconds(30))
     .idleTimeout(Duration.ofMinutes(10))
-    .cachePrepStmts(true)     // Cache de prepared statements
-    .prepStmtCacheSize(250)   // Tamanho do cache
+    .cachePrepStmts(true)         // Cache for prepared statements
+    .prepStmtCacheSize(250)       // Cache size
     .build();
 ```
 
-## 🔧 Configuração Avançada
+## 🔧 Advanced Configuration
 
-### Configurações de Performance
+### Performance Settings
 
 ```java
 DatabaseConfig config = DatabaseConfig.builder("localhost", "db", "user")
     .password("pass")
-    .maxPoolSize(50)                    // Pool maior para alta carga
-    .minIdle(10)                       // Mais conexões idle
-    .connectionTimeout(Duration.ofSeconds(10))  // Timeout menor
-    .idleTimeout(Duration.ofMinutes(5))         // Idle timeout menor
-    .maxLifetime(Duration.ofMinutes(30))        // Vida útil das conexões
-    .leakDetectionThreshold(Duration.ofSeconds(5)) // Detecção de vazamentos
-    .cachePrepStmts(true)              // Cache habilitado
-    .prepStmtCacheSize(500)            // Cache maior
-    .prepStmtCacheSqlLimit(4096)       // Limite maior para SQL
+    .maxPoolSize(50)                    // Larger pool for high load
+    .minIdle(10)                        // More idle connections
+    .connectionTimeout(Duration.ofSeconds(10)) // Shorter timeout
+    .idleTimeout(Duration.ofMinutes(5))       // Shorter idle timeout
+    .maxLifetime(Duration.ofMinutes(30))      // Connection lifetime
+    .leakDetectionThreshold(Duration.ofSeconds(5)) // Leak detection
+    .cachePrepStmts(true)               // Cache enabled
+    .prepStmtCacheSize(500)             // Larger cache
+    .prepStmtCacheSqlLimit(4096)        // Higher limit for SQL
     .build();
 ```
 
-### Monitoramento
+### Monitoring
 
 ```java
-// Informações do sistema
+// System information
 var info = db.getInfo();
 System.out.println("Status: " + info.getStatus());
 System.out.println("Pool: " + info.poolInfo().activeConnections() + "/" + info.poolInfo().maxPoolSize());
-System.out.println("Fila: " + info.queueInfo().queueSize() + " pendentes");
-System.out.println("Taxa de sucesso: " + (info.queueInfo().getSuccessRate() * 100) + "%");
+System.out.println("Queue: " + info.queueInfo().queueSize() + " pending");
+System.out.println("Success rate: " + (info.queueInfo().getSuccessRate() * 100) + "%");
 
-// Verificar saúde do sistema
+// Check system health
 if (db.isHealthy()) {
-    System.out.println("Sistema saudável");
+    System.out.println("System is healthy");
 }
 ```
 
-## 🛠️ Comandos Personalizados
+## 🛠️ Custom Commands
 
-### Criando Comandos Customizados
+### Creating Custom Commands
 
 ```java
 public class CustomQueryCommand<T> implements DatabaseCommand<T> {
@@ -232,7 +232,7 @@ public class CustomQueryCommand<T> implements DatabaseCommand<T> {
     public CompletableFuture<T> execute(Connection connection) {
         return CompletableFuture.supplyAsync(() -> {
             try (PreparedStatement stmt = connection.prepareStatement(sql)) {
-                // Configurar parâmetros
+                // Set parameters
                 for (int i = 0; i < params.length; i++) {
                     stmt.setObject(i + 1, params[i]);
                 }
@@ -253,57 +253,57 @@ public class CustomQueryCommand<T> implements DatabaseCommand<T> {
 }
 ```
 
-## 🚨 Tratamento de Erros
+## 🚨 Error Handling
 
-### Exceções Específicas
+### Specific Exceptions
 
 ```java
 try (FloruitDatabase db = new FloruitDatabase(config)) {
-    // Operações do banco
+    // Database operations
 } catch (ConnectionException e) {
-    // Erro de conexão
-    logger.error("Falha na conexão: {}", e.getMessage());
+    // Connection error
+    logger.error("Connection failed: {}", e.getMessage());
 } catch (QueryException e) {
-    // Erro na query
-    logger.error("Erro na query '{}': {}", e.getSql(), e.getMessage());
+    // Query error
+    logger.error("Error in query '{}': {}", e.getSql(), e.getMessage());
 } catch (FloruitDatabaseException e) {
-    // Erro geral
-    logger.error("Erro no banco de dados: {}", e.getMessage());
+    // General error
+    logger.error("Database error: {}", e.getMessage());
 }
 ```
 
-## 📊 Exemplo Completo
+## 📊 Complete Example
 
-Veja o arquivo `demo/FloruitDatabaseDemo.java` para um exemplo completo de uso da biblioteca, incluindo:
+See the `demo/FloruitDatabaseDemo.java` file for a complete example of how to use the library, including:
 
-- Operações CRUD básicas
-- Operações em lote
-- Transações atômicas
-- Consultas complexas
-- Monitoramento do sistema
+  - Basic CRUD operations
+  - Batch operations
+  - Atomic transactions
+  - Complex queries
+  - System monitoring
 
-## 🤝 Contribuição
+## 🤝 Contribution
 
-1. Fork o projeto
-2. Crie uma branch para sua feature (`git checkout -b feature/AmazingFeature`)
-3. Commit suas mudanças (`git commit -m 'Add some AmazingFeature'`)
-4. Push para a branch (`git push origin feature/AmazingFeature`)
-5. Abra um Pull Request
+1.  Fork the project
+2.  Create a branch for your feature (`git checkout -b feature/AmazingFeature`)
+3.  Commit your changes (`git commit -m 'Add some AmazingFeature'`)
+4.  Push to the branch (`git push origin feature/AmazingFeature`)
+5.  Open a Pull Request
 
-## 📄 Licença
+## 📄 License
 
-Este projeto está licenciado sob a Licença MIT - veja o arquivo [LICENSE](LICENSE) para detalhes.
+This project is licensed under the MIT License - see the [LICENSE](https://www.google.com/search?q=LICENSE) file for details.
 
-## 👥 Autores
+## 👥 Authors
 
-- **Floruit Entertainment** - *Desenvolvimento inicial* - [FloruitEntertainment](https://github.com/FloruitEntertainment)
+  - **Floruit Entertainment** - *Initial development* - [FloruitEntertainment](https://github.com/FloruitEntertainment)
 
-## 🙏 Agradecimentos
+## 🙏 Acknowledgements
 
-- [HikariCP](https://github.com/brettwooldridge/HikariCP) - Pool de conexões de alta performance
-- [Project Loom](https://openjdk.org/projects/loom/) - Virtual Threads do Java 21
-- Comunidade Java por feedback e sugestões
+  - [HikariCP](https://github.com/brettwooldridge/HikariCP) - High-performance connection pool
+  - [Project Loom](https://openjdk.org/projects/loom/) - Java 21's Virtual Threads
+  - The Java community for feedback and suggestions
 
----
+-----
 
-© 2025 Floruit Entertainment LTDA. FloruitDatabase é uma marca registrada da Floruit Entertainment. Todos os direitos reservados.
+© 2025 Floruit Entertainment LTD. FloruitDatabase is a registered trademark of Floruit Entertainment. All rights reserved.
